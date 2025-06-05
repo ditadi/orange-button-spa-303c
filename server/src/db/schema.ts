@@ -1,17 +1,17 @@
 
 import { serial, text, pgTable, timestamp } from 'drizzle-orm/pg-core';
 
-export const buttonConfigTable = pgTable('button_config', {
+export const uiConfigTable = pgTable('ui_config', {
   id: serial('id').primaryKey(),
-  text: text('text').notNull(),
-  color: text('color').notNull(),
-  action: text('action'), // Nullable - no action for this button
+  component_type: text('component_type').notNull(),
+  component_id: text('component_id').notNull(),
+  style_property: text('style_property').notNull(),
+  style_value: text('style_value').notNull(),
   created_at: timestamp('created_at').defaultNow().notNull(),
+  updated_at: timestamp('updated_at').defaultNow().notNull(),
 });
 
-// TypeScript type for the table schema
-export type ButtonConfig = typeof buttonConfigTable.$inferSelect;
-export type NewButtonConfig = typeof buttonConfigTable.$inferInsert;
+export type UIConfig = typeof uiConfigTable.$inferSelect;
+export type NewUIConfig = typeof uiConfigTable.$inferInsert;
 
-// Export all tables for proper query building
-export const tables = { buttonConfig: buttonConfigTable };
+export const tables = { uiConfig: uiConfigTable };

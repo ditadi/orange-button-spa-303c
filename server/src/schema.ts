@@ -1,20 +1,33 @@
 
 import { z } from 'zod';
 
-// Button configuration schema
-export const buttonConfigSchema = z.object({
+export const uiConfigSchema = z.object({
   id: z.number(),
-  text: z.string(),
-  color: z.string(),
-  action: z.string().nullable(),
-  created_at: z.coerce.date()
+  component_type: z.string(),
+  component_id: z.string(),
+  style_property: z.string(),
+  style_value: z.string(),
+  created_at: z.coerce.date(),
+  updated_at: z.coerce.date()
 });
 
-export type ButtonConfig = z.infer<typeof buttonConfigSchema>;
+export type UIConfig = z.infer<typeof uiConfigSchema>;
 
-// Input schema for getting button config
-export const getButtonConfigInputSchema = z.object({
-  id: z.number().optional()
+export const createUIConfigInputSchema = z.object({
+  component_type: z.string(),
+  component_id: z.string(),
+  style_property: z.string(),
+  style_value: z.string()
 });
 
-export type GetButtonConfigInput = z.infer<typeof getButtonConfigInputSchema>;
+export type CreateUIConfigInput = z.infer<typeof createUIConfigInputSchema>;
+
+export const updateUIConfigInputSchema = z.object({
+  id: z.number(),
+  component_type: z.string().optional(),
+  component_id: z.string().optional(),
+  style_property: z.string().optional(),
+  style_value: z.string().optional()
+});
+
+export type UpdateUIConfigInput = z.infer<typeof updateUIConfigInputSchema>;

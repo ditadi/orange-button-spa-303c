@@ -4,8 +4,11 @@ import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import 'dotenv/config';
 import cors from 'cors';
 import superjson from 'superjson';
-import { getButtonConfigInputSchema } from './schema';
-import { getButtonConfig } from './handlers/get_button_config';
+import { createUIConfigInputSchema, updateUIConfigInputSchema } from './schema';
+import { createUIConfig } from './handlers/create_ui_config';
+import { getUIConfig } from './handlers/get_ui_config';
+import { updateUIConfig } from './handlers/update_ui_config';
+import { z } from 'zod';
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -18,9 +21,15 @@ const appRouter = router({
   healthcheck: publicProcedure.query(() => {
     return { status: 'ok', timestamp: new Date().toISOString() };
   }),
-  getButtonConfig: publicProcedure
-    .input(getButtonConfigInputSchema.optional())
-    .query(({ input }) => getButtonConfig(input)),
+  createUIConfig: publicProcedure
+    .input(createUIConfigInputSchema)
+    .mutation(({ input }) => createUIConfig(input)),
+  getUIConfig: publicProcedure
+    .input(z.object({ componentType: z.string(), componentId: z.string() }))
+    .query(({ input }) => getUIConfig(input.componentType, input.componentId)),
+  updateUIConfig: publicProcedure
+    .input(updateUIConfigInputSchema)
+    .mutation(({ input }) => updateUIConfig(input)),
 });
 
 export type AppRouter = typeof appRouter;
